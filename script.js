@@ -1,38 +1,23 @@
-// Rock paper scissors
-
-// Vs Computer
-
-// Computer selects rock, paper or scissors
-
+// Computer
 let getComputerChoice = () => {
     let randomNumber = Math.random()*3
     return randomNumber < 1 ? "rock" : randomNumber >= 1 && randomNumber < 2 ? "paper" : "scissors"
 }
 
-let computerChoice = getComputerChoice();
-console.log(computerChoice);
-
-// Human selects rock, paper or scissors 
-
-let getHumanChoice = () => prompt("Please choose rock, paper or scissors").toLowerCase();
-
-let humanChoice = getHumanChoice();
-
-while (!(["rock", "paper", "scissors"].includes(humanChoice))) {
-    getHumanChoice()
+// Human
+let getHumanChoice = () => {
+    let humanChoice;
+    while (!(["rock", "paper", "scissors"].includes(humanChoice))) {
+        humanChoice = prompt("Please choose rock, paper or scissors").toLowerCase();
+    }
+    return humanChoice
 }
 
-// Winner is decided
+// playRound
+let playRound = () => {
 
-let playRound = (computerChoice, humanChoice) => {
-    // Create game conditions:
-
-    // if array contains rock and paper
-        // if humanChoice paper, human wins else computer wins
-    // if array contains paper and scissors
-        // if humanChoice scissors, human wins else computer wins
-    // if array contains scissors and rock
-        // if humanChoice rock, human wins else computer wins
+    let humanChoice = getHumanChoice();
+    let computerChoice = getComputerChoice();
 
     let gameArray = [humanChoice, computerChoice];
     
@@ -56,9 +41,40 @@ let playRound = (computerChoice, humanChoice) => {
         gameCondition = "Rock beats scissors";
     }
     
-    return `${outcome} ${gameCondition}`
+    return [outcome, gameCondition, computerChoice]
 }
 
-console.log(playRound(computerChoice, humanChoice));
+// playGame
+let playGame = () => {
+    let gameCounter = 0;
+    let humanWins = 0;
+    let computerWins = 0;
 
-// Game is restarted
+    while (!(humanWins === 3 || computerWins === 3) && gameCounter < 5) {
+        let round  = playRound();
+        
+        let outcome = round[0];
+        let gameCondition = round[1];
+        let computerChoice = round[2];
+
+        if (outcome === "You win!") {
+            humanWins++;
+            gameCounter++;
+        } else if (outcome === "You lose!") {
+            computerWins++;
+            gameCounter++ 
+        } else {
+            gameCounter++;
+        }
+        
+        alert(`${outcome} Computer chose ${computerChoice} ${gameCondition}`);
+    }
+
+    alert(
+        humanWins === 3 ? "You Won" : 
+        computerWins === 3 ? "Computer Wins" :
+        "Draw"
+    )
+}
+
+playGame();
