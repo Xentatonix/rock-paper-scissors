@@ -14,9 +14,9 @@ let getHumanChoice = () => {
 }
 
 // playRound
-let playRound = () => {
+let playRound = (humanChoice) => {
 
-    let humanChoice = getHumanChoice();
+    //let humanChoice = getHumanChoice();
     let computerChoice = getComputerChoice();
 
     let gameArray = [humanChoice, computerChoice];
@@ -44,37 +44,12 @@ let playRound = () => {
     return [outcome, gameCondition, computerChoice]
 }
 
-// playGame
-let playGame = () => {
-    let gameCounter = 0;
-    let humanWins = 0;
-    let computerWins = 0;
-
-    while (!(humanWins === 3 || computerWins === 3) && gameCounter < 5) {
-        let round  = playRound();
-        
-        let outcome = round[0];
-        let gameCondition = round[1];
-        let computerChoice = round[2];
-
-        if (outcome === "You win!") {
-            humanWins++;
-            gameCounter++;
-        } else if (outcome === "You lose!") {
-            computerWins++;
-            gameCounter++ 
-        } else {
-            gameCounter++;
-        }
-        
-        alert(`${outcome} Computer chose ${computerChoice} ${gameCondition}`);
-    }
-
-    alert(
-        humanWins === 3 ? "You Won" : 
-        computerWins === 3 ? "Computer Wins" :
-        "Draw"
-    )
+let playerSelection = (e) => {
+    let humanChoice = e.target.classList.value;
+    document.querySelector(".results").textContent = playRound(humanChoice);
+    
+    
 }
 
-playGame();
+let gameButtons = document.querySelectorAll("button");
+gameButtons.forEach(btn => addEventListener("click", playerSelection));
